@@ -1,0 +1,10 @@
+services: 
+  server:
+    container_name: casino-pal-server
+    build: 
+      context: .
+      args: 
+        - NODE_ENV=production
+    environment:
+      - NODE_ENV=production
+    command: pnpm start
