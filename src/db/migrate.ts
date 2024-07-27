@@ -4,12 +4,13 @@ import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 
-const url = config.get<string>("database.uri");
+const uri = config.get<string>("database.uri");
+console.log(uri);
 
 async function runMigration() {
   try {
     logger.info("Running migration");
-    const pool = new Pool({ connectionString: url });
+    const pool = new Pool({ connectionString: uri });
     const db = drizzle(pool);
     await migrate(db, {
       migrationsFolder: "./src/db/migrations",

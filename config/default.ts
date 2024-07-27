@@ -6,6 +6,8 @@ interface DatabaseConfig {
   user: string | undefined;
   password: string | undefined;
   uri: string | undefined;
+  port: string | undefined;
+  host: string | undefined;
 }
 
 interface AppConfig {
@@ -23,7 +25,9 @@ const config: AppConfig = {
     name: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    uri: process.env.DB_URI,
+    uri: `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+    port: process.env.DB_PORT,
+    host: process.env.DB_HOST,
   },
 };
 
