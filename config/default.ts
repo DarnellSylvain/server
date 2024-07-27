@@ -1,10 +1,11 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-export interface DatabaseConfig {
+interface DatabaseConfig {
   name: string | undefined;
   user: string | undefined;
   password: string | undefined;
+  uri: string | undefined;
 }
 
 interface AppConfig {
@@ -22,7 +23,8 @@ const config: AppConfig = {
     name: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
+    uri: process.env.DB_URI,
   },
 };
 
-export default config;
+export default config as AppConfig;
