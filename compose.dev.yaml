@@ -1,5 +1,24 @@
 services:
+  casino-pal-db:
+    image: postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    container_name: casino-pal-postgres
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+    ports:
+      - "5432:5432"
+    volumes: 
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+
   server:
+    depends_on:
+      - casino-pal-db
     container_name: casino-pal-server
     build: 
       context: .

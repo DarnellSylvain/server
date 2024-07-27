@@ -5,7 +5,6 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 
 const uri = config.get<string>("database.uri");
-console.log(uri);
 
 async function runMigration() {
   try {
