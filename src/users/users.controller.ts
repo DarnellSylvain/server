@@ -1,4 +1,4 @@
-import { getAllUsers } from "./user.service";
+import { getAllUsers } from "./users.service";
 import { Request, Response } from "express";
 
 export const getUserController = async (req: Request, res: Response) => {
