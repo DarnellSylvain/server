@@ -1,1 +1,1 @@
-export * from "@users/user-model";
+export * from "./users";

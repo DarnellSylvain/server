@@ -1,37 +1,36 @@
 services:
-  casino-pal-db:
+  db:
     image: postgres
-    restart: unless-stopped
     env_file:
       - .env
-    container_name: casino-pal-postgres
     environment:
-      POSTGRES_USER: $DB_USER
-      POSTGRES_PASSWORD: $DB_PASSWORD
-      POSTGRES_DB: $DB_NAME
-    ports:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports: 
       - "5432:5432"
-    volumes: 
-      - /var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD", "pg_isready" ]
-
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
   server:
     depends_on:
-      - casino-pal-db
+      - db
     container_name: casino-pal-server
     build: 
       context: .
       args: 
         - NODE_ENV=development
     ports:
-      - "8080:8080"
+      - '${PORT}:${PORT}'
     command: pnpm dev
     volumes:
       - .:/server
       - /server/node_modules
     environment: 
       - NODE_ENV=development
+
+volumes:
+  postgres_data:
+
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

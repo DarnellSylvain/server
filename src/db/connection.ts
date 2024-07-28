@@ -1,13 +1,26 @@
-import { drizzle } from "drizzle-orm/node-postgres";
+import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import config from "config";
 
-const uri = config.get<string>("database.uri");
+const host = config.get<string>("database.host");
+const port = config.get<number>("database.port");
+const user = config.get<string>("database.user");
+const password = config.get<string>("database.password");
+const name = config.get<string>("database.name");
+
+if (!host || !port || !user || !password || !name) {
+  throw new Error("Database configuration is missing");
+}
 
 const pool = new Pool({
-  connectionString: uri,
+  user,
+  password,
+  host: "host.docker.internal",
+  port,
+  database: name,
 });
 
-const db = drizzle(pool);
+const db: NodePgDatabase = drizzle(pool);
 
 export default db;
+export { pool };
