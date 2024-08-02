@@ -9,9 +9,11 @@ import {
 } from "drizzle-orm/pg-core";
 import { users } from "src/db/schema";
 
-export const sessions = pgTable("sessions", {
+export const gameSessions = pgTable("game_sessions", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
+  userId: integer("user_id")
+    .references(() => users.id)
+    .notNull(),
   startTime: timestamp("start_time").defaultNow(),
   endTime: timestamp("end_time"),
   active: boolean("active").default(true),
@@ -21,8 +23,9 @@ export const sessions = pgTable("sessions", {
 
 export const cashInputs = pgTable("cash_inputs", {
   id: serial("id").primaryKey(),
-  sessionId: integer("session_id").references(() => sessions.id),
-  amount: real("amount"),
+  sessionId: integer("session_id").references(() => gameSessions.id),
+  amount: real("amount").notNull(),
 });
 
-export type Session = InferSelectModel<typeof sessions>;
+export type GameSession = InferSelectModel<typeof gameSessions>;
+export type CashInputs = InferSelectModel<typeof cashInputs>;
