@@ -9,7 +9,7 @@ const pg_1 = require("pg");
 const node_postgres_1 = require("drizzle-orm/node-postgres");
 const migrator_1 = require("drizzle-orm/node-postgres/migrator");
 const uri = config_1.default.get("database.uri");
-async function runMigration() {
+async function main() {
     try {
         logger_1.default.info("Running migration");
         const pool = new pg_1.Pool({ connectionString: uri });
@@ -19,9 +19,10 @@ async function runMigration() {
         });
         logger_1.default.info("Migration complete");
         pool.end();
+        process.exit(0);
     }
     catch (err) {
         logger_1.default.error("Migration error", err);
     }
 }
-runMigration();
+main();

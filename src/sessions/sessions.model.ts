@@ -7,7 +7,7 @@ import {
   real,
   boolean,
 } from "drizzle-orm/pg-core";
-import { users } from "src/db/schema";
+import { users } from "src/users/users.model";
 
 export const gameSessions = pgTable("game_sessions", {
   id: serial("id").primaryKey(),

@@ -38,7 +38,6 @@ async function seed() {
         logger_1.default.error(err);
     }
     finally {
-        await pool.end();
         process.exit(0);
     }
 }

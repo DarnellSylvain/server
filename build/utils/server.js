@@ -12,5 +12,6 @@ app.use((0, cors_1.default)({
     origin: config_1.default.get("origin"),
     credentials: true,
 }));
+app.use(express_1.default.json());
 app.use("/v1", routes_1.default);
 exports.default = app;
