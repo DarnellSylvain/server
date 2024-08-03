@@ -22,14 +22,14 @@ async function seed() {
       {
         email: "test@test.com",
         password: "password",
-        firstName: "John",
-        lastName: "Doe",
+        name: "John Doe",
+        username: "BlackJohn",
       },
       {
         email: "jane@doe.com",
         password: "password",
-        firstName: "Jane",
-        lastName: "Doe",
+        name: "Jane Doe",
+        username: "PlaneJane",
       },
     ]);
   } catch (err) {

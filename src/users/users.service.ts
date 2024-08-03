@@ -1,6 +1,10 @@
-import { getUsers } from "./users.repository";
+import db from "src/db/connection";
+import { User } from "./users.model";
 
-export const getAllUsers = async () => {
-  const users = await getUsers();
-  return users;
+export const createUser = async (input: Partial<User>) => {
+  return {
+    name: "John Doe",
+    username: "BlackJohn",
+    email: "Whatever",
+  };
 };
