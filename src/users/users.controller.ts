@@ -8,6 +8,28 @@ export const createUserHandler = async (
   res: Response,
 ) => {
   try {
+    const { name, email, password, passwordConfirmation, username } = req.body;
+
+    if (password !== passwordConfirmation)
+      return res.status(400).send("Passwords do not match");
+
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        message: "Please provide all user details",
+      });
+    }
+
+    try {
+      await createUser({
+        name,
+        email,
+        password,
+        username,
+      });
+    } catch (e: any) {
+      return res.status(409).send(e.message);
+    }
+
     const user = await createUser(req.body);
     return res.send(user);
   } catch (e: any) {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ZodError, ZodSchema } from "zod";
+import { ZodSchema } from "zod";
 
 const validate =
   (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
@@ -10,7 +10,7 @@ const validate =
         params: req.params,
       });
       next();
-    } catch (e) {
+    } catch (e: any) {
       return res.status(400).send(e.errors);
     }
   };

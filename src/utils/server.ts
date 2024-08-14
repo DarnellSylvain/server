@@ -13,6 +13,10 @@ app.use(
 
 app.use(express.json());
 
+app.use("/healthcheck", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.use("/v1", routes);
 
 export default app;
