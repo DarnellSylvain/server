@@ -3,6 +3,7 @@ import config from "config";
 import { drizzle } from "drizzle-orm/node-postgres";
 import logger from "src/utils/logger";
 import { users } from "./schema";
+import { createUser } from "@users/users.service";
 
 const uri = config.get<string>("database.uri");
 
@@ -18,20 +19,18 @@ async function seed() {
     logger.info("Deleting all users");
     await db.delete(users);
     logger.info("Inserting users");
-    await db.insert(users).values([
-      {
-        email: "test@test.com",
-        password: "password",
-        name: "John Doe",
-        username: "BlackJohn",
-      },
-      {
-        email: "jane@doe.com",
-        password: "password",
-        name: "Jane Doe",
-        username: "PlaneJane",
-      },
-    ]);
+    await createUser({
+      name: "John Doe",
+      username: "BlackJohn 21",
+      email: "johndoe@email.com",
+      password: "password123",
+    });
+    await createUser({
+      name: "Jane Doe",
+      username: "Janey",
+      email: "janedoe@email.com",
+      password: "janerocks",
+    });
   } catch (err) {
     logger.error(err);
   } finally {

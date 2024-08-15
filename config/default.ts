@@ -15,12 +15,14 @@ interface AppConfig {
   host: string;
   origin: string;
   database: DatabaseConfig;
+  saltRounds: number;
 }
 
 const config: AppConfig = {
   port: process.env.PORT || 8080,
   host: process.env.HOST || "localhost",
   origin: "http://localhost:3000",
+  saltRounds: 10,
   database: {
     name: process.env.DB_NAME,
     user: process.env.DB_USER,
