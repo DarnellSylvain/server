@@ -1,29 +1,19 @@
 import { Request, Response } from "express";
-import { CreateUserInput } from "./users.schemas";
-import logger from "src/utils/logger";
-import { createUser } from "./users.service";
+import { CreateUserInput, LoginUserInput } from "./users.schemas";
+import { createUser, loginUser } from "./users.service";
 
 export const createUserHandler = async (
   req: Request<object, object, CreateUserInput["body"]>,
   res: Response,
 ) => {
-  const { name, email, password, passwordConfirmation, username } = req.body;
-
-  if (password !== passwordConfirmation)
-    return res.status(400).send("Passwords do not match");
-
-  if (!username || !email || !password) {
-    return res.status(400).json({
-      message: "Please provide all user details",
-    });
-  }
+  const { name, email, password, username } = req.body;
 
   try {
     const user = await createUser({
       name,
       email,
       password,
-      username,
+      username: username || "",
     });
 
     if (!user)
@@ -33,4 +23,12 @@ export const createUserHandler = async (
   } catch (e: any) {
     return res.status(409).send(e.message);
   }
+};
+
+export const loginUserHandler = async (
+  req: Request<object, object, LoginUserInput["body"]>,
+  res: Response,
+) => {
+  const response = await loginUser(req.body);
+  res.send(response);
 };

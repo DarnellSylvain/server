@@ -23,4 +23,18 @@ export const createUserSchema = object({
   }),
 });
 
+export const loginUserSchema = object({
+  body: object({
+    email: string({
+      required_error: "Email is required",
+    }).email({
+      message: "Invalid email",
+    }),
+    password: string({
+      required_error: "Password is required",
+    }),
+  }),
+});
+
+export type LoginUserInput = z.infer<typeof loginUserSchema>;
 export type CreateUserInput = z.infer<typeof createUserSchema>;

@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import logger from "src/utils/logger";
 import bcrypt from "bcrypt";
 import config from "config";
+import { LoginUserInput } from "./users.schemas";
 
 const saltRounds = config.get<number>("saltRounds");
 
@@ -11,10 +12,9 @@ export const createUser = async (
   input: Pick<User, "name" | "email" | "password" | "username">,
 ) => {
   const { name, email, password, username } = input;
-  const lowercasedEmail = input.email.toLowerCase();
+  const lowercasedEmail = email.toLowerCase();
 
   try {
-    // Check if user already exists
     const userExists = await db
       .select()
       .from(users)
@@ -22,11 +22,9 @@ export const createUser = async (
 
     if (userExists.length > 0) return false;
 
-    // If not, hash the password
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Insert user into database
     const user = await db
       .insert(users)
       .values({
@@ -44,6 +42,32 @@ export const createUser = async (
       });
 
     return user[0];
+  } catch (error) {
+    logger.error(error);
+  }
+};
+
+export const loginUser = async (input: Pick<User, "email" | "password">) => {
+  const { email, password } = input;
+  const lowercasedEmail = email.toLowerCase();
+
+  // check if user exists
+  try {
+    const userExists = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, lowercasedEmail));
+
+    if (userExists.length < 1) return false;
+
+    // compare password
+    const { password: hashedPassword } = userExists[0];
+
+    const isPasswordMatch = await bcrypt.compare(password, hashedPassword);
+
+    return isPasswordMatch;
+
+    // return user
   } catch (error) {
     logger.error(error);
   }
